@@ -136,14 +136,7 @@ export default {
               })
             }
             else if (error.response.status == 401) {
-                this.$q.sessionStorage.remove('uzytkownik_id')
-                this.$q.sessionStorage.remove('uzytkownik_nazwa')
-                this.$q.sessionStorage.remove('uzytkownik_admin')
-                //this.$q.sessionStorage.remove('uzytkownik')
-                this.$q.sessionStorage.remove('access_token')
-                this.$q.sessionStorage.remove('token_type')
-
-                this.$router.push("/login")
+                this.wyloguj();
             }
             else
             {
@@ -193,14 +186,7 @@ export default {
               })
             }
             else if (error.response.status == 401) {
-                this.$q.sessionStorage.remove('uzytkownik_id')
-                this.$q.sessionStorage.remove('uzytkownik_nazwa')
-                this.$q.sessionStorage.remove('uzytkownik_admin')
-                //this.$q.sessionStorage.remove('uzytkownik')
-                this.$q.sessionStorage.remove('access_token')
-                this.$q.sessionStorage.remove('token_type')
-
-                this.$router.push("/login")
+                this.wyloguj();
             }
             else
             {
@@ -312,14 +298,7 @@ export default {
               })
             }
             else if (error.response.status == 401) {
-                this.$q.sessionStorage.remove('uzytkownik_id')
-                this.$q.sessionStorage.remove('uzytkownik_nazwa')
-                this.$q.sessionStorage.remove('uzytkownik_admin')
-                //this.$q.sessionStorage.remove('uzytkownik')
-                this.$q.sessionStorage.remove('access_token')
-                this.$q.sessionStorage.remove('token_type')
-
-                this.$router.push("/login")
+                this.wyloguj();
             }
             else
             {
@@ -369,14 +348,7 @@ export default {
               })
             }
             else if (error.response.status == 401) {
-                this.$q.sessionStorage.remove('uzytkownik_id')
-                this.$q.sessionStorage.remove('uzytkownik_nazwa')
-                this.$q.sessionStorage.remove('uzytkownik_admin')
-                //this.$q.sessionStorage.remove('uzytkownik')
-                this.$q.sessionStorage.remove('access_token')
-                this.$q.sessionStorage.remove('token_type')
-
-                this.$router.push("/login")
+              this.wyloguj();
             }
             else
             {
@@ -388,6 +360,18 @@ export default {
               })
             }
         })
+    },
+    wyloguj: function () {
+        this.$q.sessionStorage.remove('uzytkownik_id')
+        this.$q.sessionStorage.remove('uzytkownik_nazwa')
+        this.$q.sessionStorage.remove('uzytkownik_admin')
+        //this.$q.sessionStorage.remove('uzytkownik')
+        this.$q.sessionStorage.remove('access_token')
+        this.$q.sessionStorage.remove('token_type')
+        
+        localStorage.clear()
+
+        this.$router.push("/login")
     }
   },
   created () {

@@ -44,7 +44,9 @@ module.exports = function (ctx) {
       all: 'auto',
 
       components: [],
-      directives: [],
+      directives: [
+        'GoBack'
+      ],
 
       // Quasar plugins
       plugins: [

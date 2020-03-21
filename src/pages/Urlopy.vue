@@ -186,14 +186,7 @@ export default {
               })
             }
             else if (error.response.status == 401) {
-                this.$q.sessionStorage.remove('uzytkownik_id')
-                this.$q.sessionStorage.remove('uzytkownik_nazwa')
-                this.$q.sessionStorage.remove('uzytkownik_admin')
-                //this.$q.sessionStorage.remove('uzytkownik')
-                this.$q.sessionStorage.remove('access_token')
-                this.$q.sessionStorage.remove('token_type')
-
-                this.$router.push("/login")
+                this.wyloguj();
             }
             else
             {
@@ -253,14 +246,7 @@ export default {
               })
             }
             else if (error.response.status == 401) {
-                this.$q.sessionStorage.remove('uzytkownik_id')
-                this.$q.sessionStorage.remove('uzytkownik_nazwa')
-                this.$q.sessionStorage.remove('uzytkownik_admin')
-                //this.$q.sessionStorage.remove('uzytkownik')
-                this.$q.sessionStorage.remove('access_token')
-                this.$q.sessionStorage.remove('token_type')
-
-                this.$router.push("/login")
+                this.wyloguj();
             }
             else
             {
@@ -285,32 +271,31 @@ export default {
         })
         .then(response => {
           this.urlopy = response.data;
-
           
-      this.$axios
-        .get("api/urlop/list?data=" + this.data + "&zatwierdzone=false",{
-          headers: {
-            Authorization:
-              this.$q.sessionStorage.getItem("token_type") +
-              " " +
-              this.$q.sessionStorage.getItem("access_token")
-          }
-        })
-        .then(response => {
-          this.urlopy = response.data;
+          this.$axios.get("api/urlop/list?data=" + this.data + "&zatwierdzone=false",{
+            headers: {
+              Authorization:
+                this.$q.sessionStorage.getItem("token_type") +
+                " " +
+                this.$q.sessionStorage.getItem("access_token")
+            }
+          })
+          .then(response => {
+            this.urlopy = response.data;
 
-          this.$axios
-        .get("api/pracownik/list", {
-          headers: {
-            Authorization:
-              this.$q.sessionStorage.getItem("token_type") +
-              " " +
-              this.$q.sessionStorage.getItem("access_token")
-          }
-        })
-        .then(response => {
-          this.pracownicy = response.data;
-        })
+            this.$axios.get("api/pracownik/list", {
+            headers: {
+              Authorization:
+                this.$q.sessionStorage.getItem("token_type") +
+                " " +
+                this.$q.sessionStorage.getItem("access_token")}
+            })
+            .then(response => {
+              this.pracownicy = response.data;
+            })
+            .catch(error => {
+              throw error
+            })
 
           })
           .catch(error => {
@@ -322,13 +307,7 @@ export default {
                 icon: "report_problem"
               });
             } else if (error.response.status == 401) {
-              this.$q.sessionStorage.remove("uzytkownik_id");
-              this.$q.sessionStorage.remove("uzytkownik_nazwa");
-              this.$q.sessionStorage.remove("uzytkownik_admin");
-              this.$q.sessionStorage.remove("access_token");
-              this.$q.sessionStorage.remove("token_type");
-
-              this.$router.push("/login");
+              this.wyloguj();
             } else {
               this.$q.notify({
                 color: "negative",
@@ -348,13 +327,7 @@ export default {
               icon: "report_problem"
             });
           } else if (error.response.status == 401) {
-            this.$q.sessionStorage.remove("uzytkownik_id");
-            this.$q.sessionStorage.remove("uzytkownik_nazwa");
-            this.$q.sessionStorage.remove("uzytkownik_admin");
-            this.$q.sessionStorage.remove("access_token");
-            this.$q.sessionStorage.remove("token_type");
-
-            this.$router.push("/login");
+            this.wyloguj();
           } else {
             this.$q.notify({
               color: "negative",
@@ -377,20 +350,20 @@ export default {
         })
         .then(response => {
           this.urlopy = response.data;
-
           
-      this.$axios
-        .get("api/urlop/list?data=" + this.data + "&zatwierdzone=false",{
-          headers: {
-            Authorization:
-              this.$q.sessionStorage.getItem("token_type") +
-              " " +
-              this.$q.sessionStorage.getItem("access_token")
-          }
-        })
-        .then(response => {
-          this.urlopy = response.data;
-
+          this.$axios.get("api/urlop/list?data=" + this.data + "&zatwierdzone=false",{
+            headers: {
+              Authorization:
+                this.$q.sessionStorage.getItem("token_type") +
+                " " +
+                this.$q.sessionStorage.getItem("access_token")
+            }
+          })
+          .then(response => {
+            this.urlopy = response.data;
+          })
+          .catch(error => {
+            throw error;
           })
         })
         .catch(error => {
@@ -402,13 +375,7 @@ export default {
               icon: "report_problem"
             });
           } else if (error.response.status == 401) {
-            this.$q.sessionStorage.remove("uzytkownik_id");
-            this.$q.sessionStorage.remove("uzytkownik_nazwa");
-            this.$q.sessionStorage.remove("uzytkownik_admin");
-            this.$q.sessionStorage.remove("access_token");
-            this.$q.sessionStorage.remove("token_type");
-
-            this.$router.push("/login");
+            wyloguj();
           } else {
             this.$q.notify({
               color: "negative",
@@ -423,6 +390,18 @@ export default {
       if (this.$q.sessionStorage.getItem("uzytkownik_admin") == true) { this.wczytajDaneW() }
       else { this.wczytajDaneM()}
     },
+    wyloguj: function () {
+        this.$q.sessionStorage.remove('uzytkownik_id')
+        this.$q.sessionStorage.remove('uzytkownik_nazwa')
+        this.$q.sessionStorage.remove('uzytkownik_admin')
+        //this.$q.sessionStorage.remove('uzytkownik')
+        this.$q.sessionStorage.remove('access_token')
+        this.$q.sessionStorage.remove('token_type')
+        
+        localStorage.clear()
+
+        this.$router.push("/login")
+    }
   },
   created() {
       var data = new Date();

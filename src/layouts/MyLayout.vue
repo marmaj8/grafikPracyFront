@@ -24,6 +24,18 @@
       </q-toolbar>
     </q-header>
 
+    <q-footer elevated>
+      <q-toolbar class="glossy">
+        <q-btn
+          v-go-back=" '/' "
+          color="secondary"
+          label="Powrót"
+        />
+      </q-toolbar>
+    </q-footer>
+
+    
+
     <q-drawer
       v-if="this.$q.sessionStorage.getItem('token_type') != null"
       v-model="leftDrawerOpen"
@@ -87,7 +99,6 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-    
   </q-layout>
 </template>
 
@@ -110,9 +121,24 @@ export default {
         //this.$q.sessionStorage.remove('uzytkownik')
         this.$q.sessionStorage.remove('access_token')
         this.$q.sessionStorage.remove('token_type')
+        
+        localStorage.clear()
 
         this.$router.push("/login")
       }
+  },
+  created() {
+    
+    if(localStorage.access_token != null)
+    {
+      this.$q.sessionStorage.set('uzytkownik_id', localStorage.uzytkownik_id )
+      this.$q.sessionStorage.set('uzytkownik_nazwa', localStorage.uzytkownik_nazwa )
+      this.$q.sessionStorage.set('uzytkownik_admin', localStorage.uzytkownik_admin)
+      this.$q.sessionStorage.set('access_token', localStorage.access_token)
+      this.$q.sessionStorage.set('token_type', localStorage.token_type)
+    }
+    else if(this.$q.sessionStorage.getItem('access_token') == null)
+      this.$router.push("/login")
   }
 }
 </script>

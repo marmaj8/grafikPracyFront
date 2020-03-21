@@ -95,6 +95,12 @@ export default {
               this.$q.sessionStorage.set('access_token', access_token)
               this.$q.sessionStorage.set('token_type', token_type)
 
+              localStorage.uzytkownik_id = response.data.Id;
+              localStorage.uzytkownik_nazwa = response.data.Imie + " " + response.data.Nazwisko;
+              localStorage.uzytkownik_admin = response.data.Administrator;
+              localStorage.access_token = access_token;
+              localStorage.token_type = token_type;
+
               this.$router.push("/")
             })
             .catch((error) => {
@@ -130,6 +136,10 @@ export default {
           })
       }
     }
+  },
+  created() {
+    if(this.$q.sessionStorage.getItem('access_token') != null)
+      this.$router.push("/")
   }
 }
 </script>
