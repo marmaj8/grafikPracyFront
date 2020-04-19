@@ -4,7 +4,6 @@
     
   <div class="q-pa-md" style="max-width: 300px">
     <form @submit.prevent.stop="onSubmit" @reset.prevent.stop="onReset" class="q-gutter-md">
-      kupa
       <q-input
         name="txtLogin"
         ref="username"
