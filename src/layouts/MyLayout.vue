@@ -3,6 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
+          name="btnShowMenu"
           flat
           dense
           round
@@ -16,10 +17,10 @@
         </q-toolbar-title>
 
         <div v-if="this.$q.sessionStorage.getItem('token_type') != null">
-          <q-btn color="secondary" label="Wyloguj" @click="wyloguj" />
+          <q-btn name="btnLogOut" type="a" color="secondary" label="Wyloguj" @click="wyloguj" />
         </div>
         <div v-if="this.$q.sessionStorage.getItem('token_type') == null">
-          <q-btn type="a" href="#/login" label="Zaloguj" push/>
+          <q-btn name="btnLogInPage" type="a" href="#/login" label="Zaloguj" push/>
         </div>
       </q-toolbar>
     </q-header>
@@ -43,54 +44,54 @@
       bordered
       content-class="bg-grey-2"
     >
-      <q-list>
+      <q-list name="menuBar">
         <q-item-label header>Menu</q-item-label>
-        <q-item clickable tag="a" href="#/dane">
+        <q-item name="btnDataPage" clickable tag="a" href="#/dane">
           <q-item-section avatar>
             <q-icon name="person" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Moje Dane</q-item-label>
+            <q-item-label name="lblDataPagePage">Moje Dane</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" href="#/grafik-moj">
+        <q-item name="btnMySchedulePage" clickable tag="a" href="#/grafik-moj">
           <q-item-section avatar>
             <q-icon name="work" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Mój Grafik</q-item-label>
+            <q-item-label name="lblMySchedulePage" >Mój Grafik</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="this.$q.sessionStorage.getItem('uzytkownik_admin') == true" clickable tag="a" href="#/pracownicy">
+        <q-item  name="btnPeoplePage" v-if="this.$q.sessionStorage.getItem('uzytkownik_admin') == true" clickable tag="a" href="#/pracownicy">
           <q-item-section avatar>
             <q-icon name="people" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Pracownicy</q-item-label>
+            <q-item-label name="lblPeoplePage">Pracownicy</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="this.$q.sessionStorage.getItem('uzytkownik_admin') == true" clickable tag="a" href="#/grafiki">
+        <q-item name="btnSchedulesPage" v-if="this.$q.sessionStorage.getItem('uzytkownik_admin') == true" clickable tag="a" href="#/grafiki">
           <q-item-section avatar>
             <q-icon name="list_alt" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Grafiki</q-item-label>
+            <q-item-label name="lblSchedulesPage">Grafiki</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="this.$q.sessionStorage.getItem('uzytkownik_admin') == true" clickable tag="a" href="#/stanowiska">
+        <q-item name="btnPositionsPage" v-if="this.$q.sessionStorage.getItem('uzytkownik_admin') == true" clickable tag="a" href="#/stanowiska">
           <q-item-section avatar>
             <q-icon name="place" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Stanowiska</q-item-label>
+            <q-item-label name="lblPositionsPage">Stanowiska</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" href="#/urlopy">
+        <q-item name="btnLeavePage" clickable tag="a" href="#/urlopy">
           <q-item-section avatar>
             <q-icon name="beach_access" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Urlopy</q-item-label>
+            <q-item-label name="lblLeavePage">Urlopy</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

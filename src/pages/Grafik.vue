@@ -1,12 +1,12 @@
 <template>
   <q-page class="flex flex-center">
     <q-list padding v-if="id!=null">
-      <q-item-label header>Grafik nr {{id}}</q-item-label>
+      <q-item-label name="lblScheduleId" header>Grafik nr {{id}}</q-item-label>
 
       <q-item>
         <q-item-section>
           <q-item-label>Okres</q-item-label>
-          <q-item-label>
+          <q-item-label name="lblDates">
             {{poczatek.split("-")[2]}}.{{poczatek.split("-")[1]}}.{{poczatek.split("-")[0]}}
             -
             {{koniec.split("-")[2]}}.{{koniec.split("-")[1]}}.{{koniec.split("-")[0]}}
@@ -17,35 +17,36 @@
       <q-item>
         <q-item-section v-if="zatwierdzony!=null">
           <q-item-label>Zatwierdzony</q-item-label>
-          <q-item-label >
+          <q-item-label name="lblConfirmed">
             {{zatwierdzony}}
           </q-item-label>
         </q-item-section>
         <q-item-section v-else>
-          <q-item-label>Wymaga Zatwiedzenia</q-item-label>
-          <q-btn color="secondary" label="Zatwierdź" @click="zatwierdz" />
+          <q-item-label name="lblConfirmed">Wymaga Zatwiedzenia</q-item-label>
+          <q-btn name="btnConfirm" color="secondary" label="Zatwierdź" @click="zatwierdz" />
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
           <q-item-label></q-item-label>
           <q-item-label >
-                <q-input v-model="data" filled type="date" hint="Wybierz Dzień" />
+                <q-input name="txtDate" v-model="data" filled type="date" hint="Wybierz Dzień" />
           </q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
 
       <q-item>
-        <q-table class="col-12 table-sticky"
+        <q-table name="tabSchedule"
+        class="col-12 table-sticky"
         :data="godzinyDnia"
         :columns="columns"
         row-key="Godzina"
         virtual-scroll
         hide-bottom
-      :pagination.sync="pagination"
-      :rows-per-page-options="[0]"
-      :virtual-scroll-sticky-size-start="0"
+        :pagination.sync="pagination"
+        :rows-per-page-options="[0]"
+        :virtual-scroll-sticky-size-start="0"
       />
       </q-item>
   </q-page>
@@ -71,6 +72,8 @@ export default {
         godziny: [],
         id: null,
 
+        visibleColumns: [],
+
         pagination: {
           rowsPerPage: 0,
         }
@@ -91,14 +94,24 @@ export default {
           sortable: true,
           required: true
       })
-      this.stanowiska.forEach((st, key) => {
+      var cols = new Set()
+      this.godzinyDnia.forEach((godzina) => {
+        godzina.stanowiska.forEach((st) => {
+          if (st.pracownicy.length != 0)
+          {
+            cols.add(st.id)
+          }
+        })
+      })
+      
+      cols.forEach((st) => {
         columns.push({
-          name: st.Nazwa,
-          label: st.Nazwa,
+          name: this.stanowiska[st-1].Nazwa,
+          label: this.stanowiska[st-1].Nazwa,
           align: "left",
           field: row => {
             var string = ""
-            row['stanowiska'][key].pracownicy.forEach(p => {
+            row['stanowiska'][st-1].pracownicy.forEach(p => {
               var pracownik = this.pracownicy.find(pr => pr.Id == p)
               string += pracownik.Imie + " " + pracownik.Nazwisko + "\n"
             })
@@ -108,6 +121,7 @@ export default {
           sortable: false
         })
       })
+      
       return columns
     },
     godzinyDnia: function(){

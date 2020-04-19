@@ -1,30 +1,34 @@
 <template>
   <div class="q-pa-md">
     <div class="q-gutter-md row items-start">
-      <q-input
+      <q-input name="txtNameFiltr"
         filled
         v-model="szukaj.imie"
         label="Filtruj Imiona"
       />
-      <q-input
+      <q-input name="txtSurnameFilter"
         filled
         v-model="szukaj.nazwisko"
         label="Filtruj Nazwiska"
       />
     </div>
     <div class="row">
-      <q-table class="col-12"
+      <q-table name = "tabPeople"
+        class="col-12"
         :data="filtrowaniePracownicy"
         :columns="columns"
         row-key="Id"
         @row-click="rowclick"
         :pagination.sync="pagination"
+        
+        virtual-scroll
+        :virtual-scroll-sticky-size-start="0"
       />
     </div>
 
       <div class="q-gutter-md row items-start">
         <q-item>
-          <q-input
+          <q-input name="txtName"
         filled
         v-model="pracownik.Imie"
         label="Imie"
@@ -33,7 +37,7 @@
         :rules="[ val => val && val.length > 0 || 'Prosze wprowadzić imie']"
       />
       
-          <q-input
+          <q-input name="txtSurname"
         filled
         v-model="pracownik.Nazwisko"
         label="Nazwisko"
@@ -42,7 +46,7 @@
         :rules="[ val => val && val.length > 0 || 'Prosze wprowadzić nazwisko']"
       />
 
-          <q-input
+          <q-input name="txtEmail"
         filled
         v-model="pracownik.Email"
         type="email"
@@ -52,7 +56,7 @@
         :rules="[ val => val && val.length > 0 || 'Prosze wprowadzić email']"
       />
 
-      <q-input
+      <q-input name="txtPassword"
         filled
         :type="isPwd ? 'password' : 'text'"
         v-model="pracownik.Haslo"
@@ -64,7 +68,7 @@
         ]"
       />
 
-      <q-input
+      <q-input name="txtHours"
         filled
         v-model="pracownik.GodzinWUmowie"
         label="Ilość Godzin"
@@ -75,7 +79,7 @@
         ]"
         mask="###" unmasked-value 
       />
-      <q-btn color="secondary" label="Dodaj" @click="dodaj" />
+      <q-btn name="btnAdd" color="secondary" label="Dodaj" @click="dodaj" />
         </q-item>
       </div>
   </div>
@@ -152,8 +156,8 @@ export default {
         }
       ],
       pagination: {
-        sortBy: 'desc',
-        descending: false,
+        sortBy: 'Id',
+        descending: true,
         page: 1,
         rowsPerPage: 10
       },

@@ -1,22 +1,26 @@
 <template>
   <div class="q-pa-md">
     <div class="q-gutter-md row items-start">
-      <q-input
+      <q-input name="txtNameFiltr"
         filled
         v-model="szukaj.nazwa"
         label="Filtruj Stanowiska"
       />
     </div>
     <div class="row">
-      <q-table class="col-12"
+      <q-table name="tabPositions"
+        class="col-12"
         :data="filtrujStanowiska"
         :columns="columns"
         row-key="Id"
         @row-click="rowclick"
         :pagination.sync="pagination"
+        
+        virtual-scroll
+        :virtual-scroll-sticky-size-start="0"
       />
     </div>
-      <q-btn color="secondary" label="Dodaj" @click="dodaj" />
+      <q-btn name="btnAdd" color="secondary" label="Dodaj" @click="dodaj" />
   </div>
 </template>
 
@@ -48,8 +52,8 @@ export default {
         }
       ],
       pagination: {
-        sortBy: 'desc',
-        descending: false,
+        sortBy: 'Id',
+        descending: true,
         page: 1,
         rowsPerPage: 10
       },

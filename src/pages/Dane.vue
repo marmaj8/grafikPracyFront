@@ -2,36 +2,36 @@
   <q-page class="flex flex-center">
 
       <div v-if="pracownik != null">
-        <q-list class="bg-white" separator bordered>
+        <q-list name="liData" class="bg-white" separator bordered>
           <q-item-label header>Dane</q-item-label>
           <q-item>
             <q-item-section >Imie</q-item-section >
-            <q-item-section >{{pracownik.Imie}}</q-item-section >
+            <q-item-section name="lblName">{{pracownik.Imie}}</q-item-section >
           </q-item>
           <q-item>
             <q-item-section >Nazwisko</q-item-section >
-            <q-item-section >{{pracownik.Nazwisko}}</q-item-section >
+            <q-item-section name="lblSurame">{{pracownik.Nazwisko}}</q-item-section >
           </q-item>
           <q-item>
             <q-item-section >Nr</q-item-section >
-            <q-item-section >{{pracownik.Id}}</q-item-section >
+            <q-item-section name="lblId">{{pracownik.Id}}</q-item-section >
           </q-item>
           <q-item>
             <q-item-section >Email</q-item-section >
-            <q-item-section >{{pracownik.Email}}</q-item-section >
+            <q-item-section name="lblEmail">{{pracownik.Email}}</q-item-section >
           </q-item>
           <q-item>
             <q-item-section >GodzinWUmowie</q-item-section >
-            <q-item-section >{{pracownik.GodzinWUmowie}}</q-item-section >
+            <q-item-section name="lblHours">{{pracownik.GodzinWUmowie}}</q-item-section >
           </q-item>
           <q-item v-if="pracownik.Administrator == true">
-            <q-item-section >Posiada Uprawnienia Administratora</q-item-section >
+            <q-item-section name="lblAdmin">Posiada Uprawnienia Administratora</q-item-section >
           </q-item>
 
           <q-item class="items-center">
               <q-item-section >Hasło</q-item-section >
               <q-item-section >
-                  <q-input v-model="pracownik.Haslo" filled :type="isPwd ? 'password' : 'text'">
+                  <q-input name="txtPassword" v-model="pracownik.Haslo" filled :type="isPwd ? 'password' : 'text'">
                     <template v-slot:append>
                     <q-icon
                         :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -41,19 +41,19 @@
                     </template>
                 </q-input>
               </q-item-section >
-              <q-btn color="secondary" label="Zmień Hasło" @click="zmien" />
+              <q-btn name="btnChangePassword" color="secondary" label="Zmień Hasło" @click="zmien" />
           </q-item>
         </q-list>
 
-          <q-list class="bg-white" separator bordered>
+          <q-list name="liWorkDays" class="bg-white" separator bordered>
               <q-item-label header>Możliwe godziny pracy</q-item-label>
               <q-item  v-for="(dzien) in dniRobocze" :key="dzien.dzien">
                 <q-item-section>
-                  <div class="row">
-                    <div class="col">
+                  <div class="row workDay">
+                    <div :name="'lblDay'+dzien.dzien" class="col">
                       {{nazwyDni[dzien.dzien].nazwa}}
                     </div>
-                    <div class="col">
+                    <div :name="'lblDayHours'+dzien.dzien" class="col">
                       {{dzien.poczatek.split("T")[1].split(":")[0]}}:{{dzien.poczatek.split("T")[1].split(":")[1]}}
                       -
                       {{dzien.koniec.split("T")[1].split(":")[0]}}:{{dzien.koniec.split("T")[1].split(":")[1]}}

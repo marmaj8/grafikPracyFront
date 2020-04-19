@@ -2,28 +2,32 @@
   <q-page class="flex flex-center">
   <div class="q-pa-md">
     <div class="q-gutter-md row items-start">
-      <q-input v-model="filtr.poczatek" filled type="date" hint="Pocątek" />
-      <q-input v-model="filtr.koniec" filled type="date" hint="Koniec" />
-      <q-checkbox v-model="filtr.tylkoZatwierdozne" label="Tylko Zatwierdozne" color="teal" />
+      <q-input name="txtDateBegin" v-model="filtr.poczatek" filled type="date" hint="Pocątek" />
+      <q-input name="txtDateEnd" v-model="filtr.koniec" filled type="date" hint="Koniec" />
+      <q-checkbox name="chbConfirmed" v-model="filtr.tylkoZatwierdozne" label="Tylko Zatwierdozne" color="teal" />
     </div>
     <div class="row">
-      <q-table class="col-12"
+      <q-table name="tabSchedules"
+        class="col-12"
         :data="filtrowanieGrafiow"
         :columns="columns"
         row-key="Id"
         @row-click="rowclick"
         :pagination.sync="pagination"
+        
+        virtual-scroll
+        :virtual-scroll-sticky-size-start="0"
       />
     </div>
 
     <div class="q-gutter-md row items-start ">
       <q-item  class="items-center">
-        <q-input v-model="poczatek" filled type="date" hint="Pocątek" :disable="generowany" />
-        <q-input v-model="koniec" filled type="date" hint="Koniec" :disable="generowany" />
+        <q-input name="txtNewDateBegin"  v-model="poczatek" filled type="date" hint="Pocątek" :disable="generowany" />
+        <q-input name="txtNewDateEnd" v-model="koniec" filled type="date" hint="Koniec" :disable="generowany" />
         <q-input
-          v-model.number="dlugosc" type="number" filled hint="Przedziałów na Godzinę" :disable="generowany" />
-        <q-btn v-if="!generowany" color="secondary" label="Wygeneruj Grafik" @click="dodaj" />
-        <q-btn v-else color="secondary" disable label="Trwa Generowanie" />
+          name="txtNumbers" v-model.number="dlugosc" type="number" filled hint="Przedziałów na Godzinę" :disable="generowany" />
+        <q-btn name="btnGenerate" v-if="!generowany" color="secondary" label="Wygeneruj Grafik" @click="dodaj" />
+        <q-btn name="btnGenerate" v-else color="secondary" disable label="Trwa Generowanie" />
       </q-item>
     </div>
   </div>

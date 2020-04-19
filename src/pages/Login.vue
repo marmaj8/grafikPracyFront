@@ -4,8 +4,9 @@
     
   <div class="q-pa-md" style="max-width: 300px">
     <form @submit.prevent.stop="onSubmit" @reset.prevent.stop="onReset" class="q-gutter-md">
-      
+      kupa
       <q-input
+        name="txtLogin"
         ref="username"
         filled
         v-model="username"
@@ -17,6 +18,7 @@
       />
 
       <q-input
+        name="txtPassword"
         ref="password"
         filled
         :type="isPwd ? 'password' : 'text'"
@@ -30,14 +32,13 @@
       />
 
       <div>
-        <q-btn label="Zaloguj" type="submit" color="primary" />
+        <q-btn name="btnLogIn" label="Zaloguj" type="submit" color="primary" />
       </div>
     </form>
   </div>
     
     <div class="q-pa-md">
       <div class="q-gutter-md col items-start">
-
       </div>
     </div>
   </q-page>

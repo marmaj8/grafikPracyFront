@@ -2,26 +2,31 @@
   <q-page class="flex flex-center">
   <div class="q-pa-md">
     <div class="q-gutter-md row items-start">
-      <q-input v-model="data" filled type="date" hint="Początek" @change="wczytajDane" />
-      <q-checkbox v-model="filtr.tylkoZatwierdozne" label="Tylko Zatwierdozne" color="teal" />
-      <q-checkbox v-model="filtr.tylkoMoje" label="Tylko Moje" color="teal" />
+      <q-input name="txtDate" v-model="data" filled type="date" hint="Po dniu" @change="wczytajDane" />
+      <q-checkbox name="chbConfirmed" v-model="filtr.tylkoZatwierdozne" label="Tylko Zatwierdozne" color="teal" />
+      <q-checkbox v-if="this.$q.sessionStorage.getItem('uzytkownik_admin') == true" name="chbMy" v-model="filtr.tylkoMoje" label="Tylko Moje" color="teal" />
     </div>
     <div class="row">
-      <q-table class="col-12"
+      <q-table name="tabLeaves"
+        class="col-12 table-sticky"
         :data="filtrowanieUrlopow"
         :columns="columns"
         row-key="Id"
         @row-click="rowclick"
         :pagination.sync="pagination"
+        :visible-columns="visibleColumns"
+        
+        virtual-scroll
+        :virtual-scroll-sticky-size-start="0"
       />
     </div>
 
     <div class="q-gutter-md row items-start ">
       <q-item class="items-center">
-        <q-input class="col-3" v-model="urlop.poczatek" filled type="date" hint="Początek" />
-        <q-input class="col-3" v-model="urlop.koniec" filled type="date" hint="Koniec" />
-        <q-input class="col-3" v-model="urlop.powod" filled hint="Powód" />
-        <q-btn class="col-3" color="secondary" label="Zgłoś" @click="dodaj" />
+        <q-input name="txtBegin" class="col-3" v-model="urlop.poczatek" filled type="date" hint="Początek" />
+        <q-input name="txtEnd" class="col-3" v-model="urlop.koniec" filled type="date" hint="Koniec" />
+        <q-input name="txtPurpose" class="col-3" v-model="urlop.powod" filled hint="Powód" />
+        <q-btn name="btnAdd" class="col-3" color="secondary" label="Zgłoś" @click="dodaj" />
       </q-item>
     </div>
 
@@ -29,12 +34,12 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="signal_wifi_off" color="primary" text-color="white" />
-          <span class="q-ml-sm">{{confirmTxt()}}</span>
+          <span name="lblConfirmConfirm" class="q-ml-sm">{{confirmTxt()}}</span>
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Anuluj" color="primary" v-close-popup />
-          <q-btn flat label="Zatwierdź" color="primary" @click="zatwierdx" />
+          <q-btn name="btnCancelConfirm" flat label="Anuluj" color="primary" v-close-popup />
+          <q-btn name="btnConfirmConfirm" flat label="Zatwierdź" color="primary" @click="zatwierdx" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -52,6 +57,7 @@ export default {
         koniec: "",
         pracownik: "",
         powod: "",
+        zatwierdzony: false,
       },
       filtr: {
         tylkoZatwierdozne: false,
@@ -117,6 +123,7 @@ export default {
             }
         },
       ],
+      visibleColumns: ['Id','Osoba','Poczatek','Koniec','Powod','Zatwierdzony'],
       pagination: {
         sortBy: 'Id',
         descending: true,
@@ -218,7 +225,7 @@ export default {
         })
         .then((response) => {
             this.urlop.id = response.data;
-            this.urlop.zatwierdzony = true;
+            this.urlop.zatwierdzony = false;
 
             this.urlopy.push( {
               id: this.urlop.id,
@@ -340,7 +347,7 @@ export default {
     },
     wczytajDaneM() {
       this.$axios
-        .get("api/urlop/list?data=" + this.data + "&zatwierdzone=false",{
+        .get("api/urlop/list?id="+ this.$q.sessionStorage.getItem('uzytkownik_id') + "&data=" + this.data + "&zatwierdzone=false",{
           headers: {
             Authorization:
               this.$q.sessionStorage.getItem("token_type") +
@@ -388,7 +395,12 @@ export default {
     },
     wczytajDane() {
       if (this.$q.sessionStorage.getItem("uzytkownik_admin") == true) { this.wczytajDaneW() }
-      else { this.wczytajDaneM()}
+      else 
+      { 
+        this.filtr.tylkoMoje = true;
+        this.visibleColumns = ['Id','Poczatek','Koniec','Powod','Zatwierdzony'],
+        this.wczytajDaneM()
+      }
     },
     wyloguj: function () {
         this.$q.sessionStorage.remove('uzytkownik_id')

@@ -3,15 +3,15 @@
 
       <div>
         <q-list class="bg-white" separator bordered>
-              <q-item-label header>Stanowisko {{stanowisko.Id}}</q-item-label>
+              <q-item-label name="lblPositionId" header>Stanowisko {{stanowisko.Id}}</q-item-label>
         <q-item>
           <q-item-section>Nazwa</q-item-section>
-          <q-input filled v-model="stanowisko.Nazwa" />
+          <q-input name="txtName" filled v-model="stanowisko.Nazwa" />
         </q-item>
         <q-item>
           <q-item-section></q-item-section>
-            <q-btn v-if="stanowisko.Id!=null" class="col-4" color="positive" label="Zapisz Zmiany" @click="zapisz" />
-            <q-btn v-else class="col-4" color="positive" label="Dodaj Stanowisko" @click="dodajStanowisko" />
+            <q-btn name="btnSave" v-if="stanowisko.Id!=null" class="col-4" color="positive" label="Zapisz Zmiany" @click="zapisz" />
+            <q-btn name="btnSave" v-else class="col-4" color="positive" label="Dodaj Stanowisko" @click="dodajStanowisko" />
         </q-item>
         </q-list>
 
@@ -20,24 +20,28 @@
         <q-item v-for="(poz) in posortowaneMiejsca" :key="poz.id">
           <q-item-section>
               <div class="row items-center" >
-                <q-item-label class="col-2">{{nazwyDni[poz.Dzien].label}}</q-item-label>
-                <q-input class="col-2" label="od" v-model="poz.Poczatek" filled type="time"/>
-                <q-input class="col-2" label="do" v-model="poz.Koniec" filled type="time"/>
-                <q-input class="col-2" label="Minimum" v-model="poz.Min" filled type="number"/>
-                <q-input class="col-2" label="Maksimum" v-model="poz.Max" filled type="number"/>
-                <q-btn class="col-2" color="negative" label="Usuń" @click="usun(poz.id)" />
+                <q-item-label :name="'lblDay'+poz.Dzien" class="col-2">{{nazwyDni[poz.Dzien].label}}</q-item-label>
+                <q-item-label :name="'lblBegin'+poz.Dzien" class="col-2 text-center">{{poz.Poczatek}}</q-item-label>
+                <q-item-label :name="'lblEnd'+poz.Dzien" class="col-2 text-center">{{poz.Koniec}}</q-item-label>
+                <!--
+                <q-input :name="'txtBegin'+poz.Dzien" class="col-2" label="od" v-model="poz.Poczatek" filled type="time"/>
+                <q-input :name="'txtEnd'+poz.Dzien" class="col-2" label="do" v-model="poz.Koniec" filled type="time"/>
+                -->
+                <q-input :name="'txtMin'+poz.Dzien" class="col-2" label="Minimum" v-model="poz.Min" filled type="number"/>
+                <q-input :name="'txtMax'+poz.Dzien" class="col-2" label="Maksimum" v-model="poz.Max" filled type="number"/>
+                <q-btn :name="'btnDelete'+poz.Dzien" class="col-2" color="negative" label="Usuń" @click="usun(poz.id)" />
               </div>
           </q-item-section>
         </q-item>
         <q-item>
             <q-item-section>
               <div class="row items-center" >
-                <q-select class="col-2" v-model="wolne.Dzien" :options="nazwyDni" label="Dzień" />
-                <q-input class="col-2" label="od" v-model="wolne.Poczatek" filled type="time"/>
-                <q-input class="col-2" label="do" v-model="wolne.Koniec" filled type="time"/>
-                <q-input class="col-2" label="Minimum" v-model="wolne.Min" filled type="number"/>
-                <q-input class="col-2" label="Maksimum" v-model="wolne.Max" filled type="number"/>
-                <q-btn class="col-2" color="positive" label="Dodaj" @click="dodajWymagania" />
+                <q-select name="ddlDay" class="col-2" v-model="wolne.Dzien" :options="nazwyDni" label="Dzień" />
+                <q-input name="txtBegin" class="col-2" label="od" v-model="wolne.Poczatek" filled type="time"/>
+                <q-input name="txtEnd" class="col-2" label="do" v-model="wolne.Koniec" filled type="time"/>
+                <q-input name="txtMin" class="col-2" label="Minimum" v-model="wolne.Min" filled type="number"/>
+                <q-input name="txtMax" class="col-2" label="Maksimum" v-model="wolne.Max" filled type="number"/>
+                <q-btn name="btnAdd" class="col-2" color="positive" label="Dodaj" @click="dodajWymagania" />
               </div>
             </q-item-section>
         </q-item>
@@ -60,7 +64,7 @@ export default {
         miejscaMax: 0,
         dniRobocze: [],
         nazwyDni: [
-            { label: "niedziela", value: 0 },
+            { label: "niedziela", value: 0},
             { label: "poniedziałek", value: 1 },
             { label: "wtorek", value: 2 },
             { label: "środa", value: 3 },
@@ -71,8 +75,8 @@ export default {
         isPwd: true,
         wolne: {
             Dzien: {
-                label: null,
-                value: null,
+                label: "niedziela",
+                value: 0,
             },
             Poczatek: "08:00",
             Koniec: "08:00",
@@ -281,7 +285,7 @@ export default {
                     Max: st.Max,
                     Dzien: st.Dzien,
                     Poczatek: poczatek.split(":")[0] + ":" +poczatek.split(":")[1],
-                    Koniec: koniec.split(":")[0] + ":" +poczatek.split(":")[1],
+                    Koniec: koniec.split(":")[0] + ":" +koniec.split(":")[1],
                 })
                 i++;
             });

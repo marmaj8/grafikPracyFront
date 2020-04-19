@@ -1,35 +1,35 @@
 <template>
   <q-page class="q-pa-md" v-if="pracownik">
     <div class="row flex flex-center">
-        <q-btn class="half-width" color="secondary" label="Zapisz" @click="zmien" />
+        <q-btn name="btnSave" class="half-width" color="secondary" label="Zapisz" @click="zmien" />
     </div>
     <div class="row flex flex-center">
       <q-item>
         <q-list class="bg-white" separator bordered>
         <q-item>
           <q-item-section>Imie</q-item-section>
-          <q-input filled v-model="pracownik.Imie" />
+          <q-input name="txtName" filled v-model="pracownik.Imie" />
         </q-item>
         <q-item>
           <q-item-section>Nazwisko</q-item-section>
-          <q-input filled v-model="pracownik.Nazwisko" />
+          <q-input name="txtSurname" filled v-model="pracownik.Nazwisko" />
         </q-item>
         <q-item>
           <q-item-section>Email</q-item-section>
-          <q-input type="email" filled v-model="pracownik.Imie" />
+          <q-input name="txtEmail" type="email" filled v-model="pracownik.Email" />
         </q-item>
         <q-item>
           <q-item-section>Ilość godzin w umowie</q-item-section>
-          <q-input filled v-model="pracownik.GodzinWUmowie" mask="###" unmasked-value />
+          <q-input name="txtHours" filled v-model="pracownik.GodzinWUmowie" mask="###" unmasked-value />
         </q-item>
         <q-item>
           <q-item-section>Uprawnienia Administratora</q-item-section>
-          <q-checkbox v-model="pracownik.Administrator" />
+          <q-checkbox name="chbAdmin" v-model="pracownik.Administrator" />
         </q-item>
 
         <q-item>
           <q-item-section>Hasło</q-item-section>
-          <q-input v-model="pracownik.Haslo" filled :type="isPwd ? 'password' : 'text'">
+          <q-input name="txtPassword" v-model="pracownik.Haslo" filled :type="isPwd ? 'password' : 'text'">
             <template v-slot:append>
               <q-icon
                 :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -47,18 +47,18 @@
         <q-item-label header>Możliwe godziny pracy</q-item-label>
         <q-item v-for="(dzien ) in dni" :key="dzien.nazwa">
           <q-item-section>
-          <q-item-label>{{dzien.nazwa}}</q-item-label>
+          <q-item-label :name="'lblDay'+dzien.id">{{dzien.nazwa}}</q-item-label>
               <div class="row items-center" >
-              <q-checkbox class="row" v-model="dzien.aktywny"/>
-                <q-input v-if="dzien.aktywny" label="od" v-model="dzien.poczatek" filled type="time"/>
-                <q-input v-if="dzien.aktywny" label="do" v-model="dzien.koniec" filled type="time"/>
+              <q-checkbox :name="'chbActiveDay'+dzien.id" class="row" v-model="dzien.aktywny"/>
+                <q-input :name="'txtBegin'+dzien.id" v-if="dzien.aktywny" label="od" v-model="dzien.poczatek" filled type="time"/>
+                <q-input :name="'txtEnd'+dzien.id" v-if="dzien.aktywny" label="do" v-model="dzien.koniec" filled type="time"/>
               </div>
           </q-item-section>
         </q-item>
       </q-list>
       </q-item>
       <q-item>
-      <q-table
+      <q-table name="tabPositions"
       title="Stanowiska"
       :data="stanowiska"
       :columns="stanowiskaColumns"
